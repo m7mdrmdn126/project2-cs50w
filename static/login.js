@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     alert(`hello ${username}`);
 
     localStorage.setItem('current_user', username)
+    localStorage.setItem('currentroom', "")
   }
 
 })

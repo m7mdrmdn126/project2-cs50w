@@ -22,14 +22,28 @@
 
 
       <hr>
-
+      <!-- this div is controlling of getting information to create a chatroom -->
       <form id="creating_form">
         <input type="text" id="channel_name" placeholder="create a new chatroom">
         <input type="submit" value="ss">
       </form>
 
 
+      <!-- this form is for getting information about the channel that the user want to join -->
+      <form id="join">
+        <input type="text" id="join_name" placeholder="enter an existance room to join">
+        <p id="message"></p>
+        <input type="submit" value="Join Room">
+      </form>
 
+
+
+
+
+
+
+
+      <!-- logging out form -->
       <form action="{{url_for('logout')}}">
         <input type="submit" >
       </form>

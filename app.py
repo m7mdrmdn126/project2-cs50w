@@ -12,6 +12,9 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 
+channels = []
+
+
 
 # the index page where all the thing are done
 @app.route("/")
@@ -46,12 +49,21 @@ def create():
     user = session.get("user")
     channel_name = request.form.get("room_name")
     chat = []
+    channels.append(channel_name)
     message = f"{user} has been created this channel"
 
     return jsonify({"name":channel_name, "chat":chat, "message":message})
 
 
+# this function working on request from client side code to make the user join the room 
+@app.route("/join_room", methods = ['POST', 'GET'])
+def join_room():
+    channel_name = request.form.get("room_name")
 
+    if channel_name not in channels :
+        return jsonify({"success":False})
+
+    return jsonify({"success":True})
 
 
 
