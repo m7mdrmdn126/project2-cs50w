@@ -11,33 +11,59 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-channels = []
 
 
-
-
+# the index page where all the thing are done
 @app.route("/")
 def index():
+    username = session.get('user')
+    if username is None:
+        return redirect(url_for('login'))
+
     return render_template("index.html")
 
 
 
+# login route and saving the username in a session
+@app.route("/login", methods =['GET', 'POST'])
+def login():
+    if request.method == 'POST' :
+        username = request.form.get("username")
+        session["user"] = username
+        return redirect(url_for('index'))
+    if session.get("user") is None :
+        return render_template("login.html")
+    else:
+        return "you have been alredy logged in"
 
+
+
+
+
+# the server route where we can make a new channel
 @app.route("/create", methods=["POST", "GET"])
 def create():
-    channel_name = request.form.get("room_name")
     user = session.get("user")
-
+    channel_name = request.form.get("room_name")
     chat = []
-    users = []
-    users.append(user)
     message = f"{user} has been created this channel"
-    channels.append(channel_name)
 
-    return jsonify({"name":channel_name, "chat":chat, "users":users, "message":message, "channels":channels})
-
+    return jsonify({"name":channel_name, "chat":chat, "message":message})
 
 
+
+
+
+
+
+
+
+
+
+@app.route("/logout")
+def logout():
+    session["user"] = None
+    return redirect(url_for('index'))
 
 
 
