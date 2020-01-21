@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>  welcome  </title>
     <script src="{{ url_for('static', filename='index.js') }}"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
   </head>
   <body>
 
@@ -36,7 +37,18 @@
         <input type="submit" value="Join Room">
       </form>
 
+      <hr>
 
+      <form id="texting">
+        <input type="text" id="mm" placeholder="your message">
+        <input type="submit" value="send">
+      </form>
+
+      <hr>
+
+      <ul id="chat">
+
+      </ul>
 
 
 

@@ -4,17 +4,24 @@
     <meta charset="utf-8">
     <title>trying</title>
     <script  type="text/javascript">
-      const li = document.createElement('li');
-      const but = document.createElement('button');
-      but.value = "playing";
-      li.innerHTML = but ;
-      document.querySelector('#pp').append(li);
+    document.addEventListener("DOMContentLoaded", () => {
+      var list = document.querySelector('#pp')
+      var ll = document.querySelectorAll('.qw').forEach(function(list_i) {
+        list.removeChild(list_i);
+      })
+
+
+      console.log()
+   });
 
     </script>
   </head>
   <body>
     <ul id="pp">
-
+      <li class="qw">play</li>
+      <li class="qw">play1111</li>
+      <li class="q">play222</li>
+      <li class="qw">playddddd</li>
     </ul>
   </body>
 </html>

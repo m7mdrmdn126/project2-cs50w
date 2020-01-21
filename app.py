@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session, redirect, url_for, j
 from flask_socketio import SocketIO, emit
 from flask_session import Session
 import os
+import datetime
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
@@ -55,7 +56,7 @@ def create():
     return jsonify({"name":channel_name, "chat":chat, "message":message})
 
 
-# this function working on request from client side code to make the user join the room 
+# this function working on request from client side code to make the user join the room
 @app.route("/join_room", methods = ['POST', 'GET'])
 def join_room():
     channel_name = request.form.get("room_name")
@@ -82,5 +83,38 @@ def logout():
 
 
 
+
+
+
+
+
+
+@socketio.on("send message")
+def send_message(data):
+    time = datetime.datetime.now()
+    day = time.strftime("%a")
+    date = time.strftime("%x")
+    now = time.strftime("%H")
+
+
+    message = data["message"]
+    username = session.get('user')
+    send = f"user {username} on {day},{date} at{now} : <br> {message}"
+
+
+    emit('rescive', send, broadcast=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
 if __name__ == "__main__" :
-    app.run()
+    socketio.run(app)

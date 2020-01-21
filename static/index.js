@@ -10,10 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-
-
-
-
   // loopig on channels array and making buttons has data by the name of each channel in one list
   var channels = JSON.parse(localStorage.getItem(current_user));
   channels.forEach(channel);
@@ -23,13 +19,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const butt = document.createElement('button');
     butt.innerText = item
     butt.dataset.name = item
+    butt.className += "channels"
     li.appendChild(butt);
     document.querySelector("#channels_list").append(li);
     };
-
-
-
-
 
 
 //chatroom varible that has the value of the current room where the user in
@@ -42,7 +35,61 @@ document.addEventListener("DOMContentLoaded", () => {
   else{
     document.querySelector("#starter").innerHTML = `you are in ${chatroom} room` ;
   }
+
+
+
+  if (!localStorage.getItem(chatroom)){
+    let chat = [] ;
+    localStorage.setItem(chatroom, JSON.stringify(chat));
+  }
+
+
+  var chat = JSON.parse(localStorage.getItem(chatroom));
+  chat.forEach(chating);
+
+  function chating(item){
+    const li = document.createElement('li');
+    li.innerHTML = item ;
+    li.className += "messa";
+    document.querySelector("#chat").append(li);
+    };
+
+
+
+
 // end
+
+
+var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+socket.on('connect', () => {
+  document.querySelector('#texting').onsubmit = () =>{
+    var message = document.querySelector('#mm').value;
+
+    socket.emit('send message', {"message":message});
+  };
+
+});
+
+socket.on('rescive', data => {
+  var message = data;
+  var room_name = localStorage.getItem('currentroom');
+  var chat = JSON.parse(localStorage.getItem(room_name));
+
+  chat.push(message);
+  localStorage.setItem(room_name, JSON.stringify(chat));
+
+  var li = document.createElement('li');
+  li.innerHTML = message ;
+  li.className += "messa";
+  document.querySelector("#chat").append(li);
+
+
+
+
+});
+
+
 
 
 
@@ -62,7 +109,8 @@ document.querySelector("#creating_form").onsubmit = () =>{
   request.onload = () =>{
 
     const data = JSON.parse(request.responseText);
-    localStorage.setItem(room_name, data);
+    chat = JSON.stringify(data.chat)
+    localStorage.setItem(room_name, chat);
     localStorage.setItem("currentroom", room_name);
     document.querySelector("#starter").innerHTML = `you are in ${room_name} room` ;
 
@@ -88,8 +136,15 @@ document.querySelector("#creating_form").onsubmit = () =>{
     const butt = document.createElement('button');
     butt.innerText = last;
     butt.dataset.name = last;
+    butt.className += "channels";
     li.appendChild(butt);
     document.querySelector("#channels_list").append(li);
+
+
+    var list = document.querySelector('#chat')
+    var ll = document.querySelectorAll('.messa').forEach(function(list_i) {
+      list.removeChild(list_i);
+    });
 
 
 
@@ -128,6 +183,10 @@ document.querySelector('#join').onsubmit = () =>{
       user = localStorage.getItem('current_user');
       user_channels = JSON.parse(localStorage.getItem(user));
       user_channels.push(room_name);
+      localStorage.setItem(user, JSON.stringify(user_channels))
+
+      localStorage.setItem('currentroom', room_name)
+      document.querySelector("#starter").innerHTML = `you are in ${room_name} room` ;
 
 
       var last = user_channels[user_channels.length -1]
@@ -135,8 +194,28 @@ document.querySelector('#join').onsubmit = () =>{
       const butt = document.createElement('button');
       butt.innerText = last;
       butt.dataset.name = last;
+      butt.className += "channels";
       li.appendChild(butt);
       document.querySelector("#channels_list").append(li);
+
+
+      var list = document.querySelector('#chat')
+      var ll = document.querySelectorAll('.messa').forEach(function(list_i) {
+        list.removeChild(list_i);
+      });
+
+
+      var chat = JSON.parse(localStorage.getItem(room_name))
+      chat.forEach(chating);
+
+      function chating(item){
+        const li = document.createElement('li');
+        li.innerHTML = item ;
+        li.className += "messa";
+        document.querySelector("#chat").append(li);
+        };
+
+
     }
   }
 
@@ -146,11 +225,35 @@ document.querySelector('#join').onsubmit = () =>{
   return false;
 
 
-
-
 }
 
+document.querySelectorAll('.channels').forEach(button => {
+  button.onclick = () => {
+    let channel_name = button.dataset.name ;
+    localStorage.setItem('currentroom', channel_name);
+    document.querySelector("#starter").innerHTML = `you are in ${channel_name} room` ;
 
+    var list = document.querySelector('#chat')
+    var ll = document.querySelectorAll('.messa').forEach(function(list_i) {
+      list.removeChild(list_i);
+    });
+
+    var chat = JSON.parse(localStorage.getItem(channel_name));
+    chat.forEach(chating);
+
+    function chating(item){
+      const li = document.createElement('li');
+      li.innerHTML = item ;
+      li.className += "messa";
+      document.querySelector("#chat").append(li);
+      };
+
+
+
+
+
+  }
+})
 
 
 
