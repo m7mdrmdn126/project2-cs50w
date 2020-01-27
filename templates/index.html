@@ -5,60 +5,69 @@
     <title>  welcome  </title>
     <script src="{{ url_for('static', filename='index.js') }}"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='index.css')}}">
   </head>
-  <body>
 
-    <div id="starter">
-      <!-- this div is for identifying if the user in a chatroom or not and displaying the name of the chatroom -->
-    </div>
-
-
-
-    <hr>
-      <ul id="channels_list">
-        <!-- this an list of all channels that the user can interact with -->
-      </ul>
+    <nav>
+      <div id="starter">
+        <!-- this div is for identifying if the user in a chatroom or not and displaying the name of the chatroom -->
+        you are in this chatroom
+      </div>
 
 
 
+      <p id="tit">Channels list</p>
+        <ul id="channels_list">
+          <!-- this an list of all channels that the user can interact with -->
 
-      <hr>
-      <!-- this div is controlling of getting information to create a chatroom -->
-      <form id="creating_form">
-        <input type="text" id="channel_name" placeholder="create a new chatroom">
-        <input type="submit" value="ss">
-      </form>
-
-
-      <!-- this form is for getting information about the channel that the user want to join -->
-      <form id="join">
-        <input type="text" id="join_name" placeholder="enter an existance room to join">
-        <p id="message"></p>
-        <input type="submit" value="Join Room">
-      </form>
-
-      <hr>
-
-      <form id="texting">
-        <input type="text" id="mm" placeholder="your message">
-        <input type="submit" value="send">
-      </form>
-
-      <hr>
-
-      <ul id="chat">
-
-      </ul>
+        </ul>
 
 
 
 
+        <br><br>
+        <!-- this div is controlling of getting information to create a chatroom -->
+        <form id="creating_form">
+          <input type="text" id="channel_name" placeholder="create a new chatroom">
+          <input type="submit" value="Create channel">
+        </form>
+
+        <br><br><br>
+        <!-- this form is for getting information about the channel that the user want to join -->
+        <form id="join">
+          <input type="text" id="join_name" placeholder="enter a room name">
+          <input type="submit" value="Join Room">
+          <p id="message"></p>
+        </form>
+        <br><br>
 
 
-      <!-- logging out form -->
-      <form action="{{url_for('logout')}}">
-        <input type="submit" >
-      </form>
+        <!-- logging out form -->
+        <form action="{{url_for('logout')}}">
+          <input id="logout" type="submit" value="Logout">
+        </form>
+
+
+
+    </nav>
+
+
+
+    <body>
+
+
+
+        <ul id="chat">
+
+        </ul>
+
+
+
+        <form id="texting">
+          <input type="text" id="mm" placeholder="your message">
+          <input type="submit" value="send">
+        </form>
+
 
 
 
